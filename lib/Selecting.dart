@@ -143,12 +143,7 @@ class _SelectionScreenState extends State<SelectionScreen>
     _animController.forward();
   }
 
-  bool get _canProceed {
-    if (_step == 0) return _selectedYear != null;
-    if (_step == 1) return _selectedProgram != null;
-    if (_step == 2) return _selectedCourse != null;
-    return false;
-  }
+  bool get _canProceed => _step == 2 && _selectedCourse != null;
 
   String get _stepTitle {
     switch (_step) {
@@ -354,21 +349,35 @@ class _SelectionScreenState extends State<SelectionScreen>
                               items: _curriculum,
                               label: (y) => y.label,
                               selected: _selectedYear,
-                              onTap: (y) => setState(() {
-                                _selectedYear = y;
-                                _selectedProgram = null;
-                                _selectedCourse = null;
-                              }),
+                              onTap: (y) {
+                                setState(() {
+                                  _selectedYear = y;
+                                  _selectedProgram = null;
+                                  _selectedCourse = null;
+                                });
+                                // Auto-advance to step 1 after short delay
+                                Future.delayed(
+                                  const Duration(milliseconds: 250),
+                                  () => _animateToStep(1),
+                                );
+                              },
                             ),
                           if (_step == 1)
                             _buildOptionList<Program>(
                               items: _programs,
                               label: (p) => p.name,
                               selected: _selectedProgram,
-                              onTap: (p) => setState(() {
-                                _selectedProgram = p;
-                                _selectedCourse = null;
-                              }),
+                              onTap: (p) {
+                                setState(() {
+                                  _selectedProgram = p;
+                                  _selectedCourse = null;
+                                });
+                                // Auto-advance to step 2 after short delay
+                                Future.delayed(
+                                  const Duration(milliseconds: 250),
+                                  () => _animateToStep(2),
+                                );
+                              },
                             ),
                           if (_step == 2)
                             _buildOptionList<String>(
@@ -384,17 +393,16 @@ class _SelectionScreenState extends State<SelectionScreen>
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 52,
-                  child: ElevatedButton(
-                    onPressed: _canProceed
-                        ? () {
-                            if (_step < 2) {
-                              _animateToStep(_step + 1);
-                            } else {
+              // Button only shown on step 2 (course selection)
+              if (_step == 2)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 52,
+                    child: ElevatedButton(
+                      onPressed: _canProceed
+                          ? () {
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
@@ -406,23 +414,22 @@ class _SelectionScreenState extends State<SelectionScreen>
                                 ),
                               );
                             }
-                          }
-                        : null,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF1976D2),
-                      disabledBackgroundColor:
-                          const Color(0xFF1976D2).withOpacity(0.35),
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12)),
+                          : null,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF1976D2),
+                        disabledBackgroundColor:
+                            const Color(0xFF1976D2).withOpacity(0.35),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12)),
+                      ),
+                      child: const Text('Go to Dashboard',
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold)),
                     ),
-                    child: const Text('Go to Dashboard',
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold)),
                   ),
                 ),
-              ),
             ],
           ),
         ),

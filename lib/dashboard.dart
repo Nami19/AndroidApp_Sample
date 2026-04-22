@@ -22,8 +22,8 @@ const _students = [
   StudentRecord(id: '2026-0000004', name: 'Piloga, Bonna Mae L.', program: 'BSIT', yearLevel: '4th Year', status: AttendanceStatus.present),
   StudentRecord(id: '2026-0000005', name: 'Malate, Jownie Ann D.', program: 'BSIT', yearLevel: '4th Year', status: AttendanceStatus.present),
   StudentRecord(id: '2026-0000003', name: 'Celecia, Niel Jhon E.', program: 'BSIT', yearLevel: '4th Year', status: AttendanceStatus.present),
-  StudentRecord(id: '2026-0000007', name: 'Silgar, Seth', program: 'BSIT', yearLevel: '3rd Year', status: AttendanceStatus.late),
-  StudentRecord(id: '2026-0000008', name: 'Reyes, Maria Santos', program: 'BSIT', yearLevel: '4th Year', status: AttendanceStatus.absent),
+  StudentRecord(id: '2026-0000007', name: 'Sitjar, Seth', program: 'BSIT', yearLevel: '3rd Year', status: AttendanceStatus.late),
+  StudentRecord(id: '2026-0000008', name: 'Reyes, Maria Santos', program: 'BSIT', yearLevel: '3th Year', status: AttendanceStatus.absent),
   StudentRecord(id: '2026-0000009', name: 'Cruz, Juan Dela', program: 'BSIT', yearLevel: '3rd Year', status: AttendanceStatus.present),
 ];
 
